@@ -10,7 +10,7 @@ include 'header_inc_view.php';?>
 <h1>Connect a Database</h1>
 
 				
-		<form action="/new" method="post">
+		<form action="<?php echo base_url();?>new" method="post">
 
 			<label for="name_full">Dataset Name</label>
 			<input type="text" name="name_full" id="name_full">

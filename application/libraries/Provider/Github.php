@@ -27,7 +27,9 @@ class OAuth2_Provider_Github extends OAuth2_Provider
 			'access_token' => $token->access_token,
 		));
 
-        $options  = array('http' => array('user_agent'=> $_SERVER['HTTP_USER_AGENT']));
+		$options  = array('http' => array(
+		  'user_agent'=> $_SERVER['HTTP_USER_AGENT'],
+		  "header" => "Authorization: token $token->access_token"));
         $context  = stream_context_create($options);
 
 		$user = json_decode(file_get_contents($url, false, $context));

@@ -493,7 +493,6 @@ abstract class REST_Controller extends CI_Controller
 					// If not HTML or XML assume its right and send it on its way
 					if ($format != 'html' AND $format != 'xml')
 					{
-
 						return $format;
 					}
 
@@ -934,7 +933,8 @@ abstract class REST_Controller extends CI_Controller
 			return FALSE;
 		}
 
-		$valid_logins = & $this->config->item('rest_valid_logins');
+		$rest_valid_logins = $this->config->item('rest_valid_logins');
+		$valid_logins = & $rest_valid_logins;
 
 		if ( ! array_key_exists($username, $valid_logins))
 		{

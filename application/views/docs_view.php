@@ -43,14 +43,14 @@
 
 
 <?php
-$discovery_url = 'http://'.$_SERVER["SERVER_NAME"].base_url() . $db['user_url'] . '/api-docs.json/' . $db['name_url'];
+$discovery_url = base_url() . $db['user_url'] . '/api-docs.json/' . $db['name_url'];
 ?>
 
    <script type="text/javascript">
        $(function () {
            window.swaggerUi = new SwaggerUi({
                discoveryUrl:"<?php echo $discovery_url; ?>",
-               apiKey:"api-key",
+               //apiKey:"api-key",
                dom_id:"swagger-ui-container",
                supportHeaderParams: false,
                supportedSubmitMethods: ['get', 'post', 'put'],

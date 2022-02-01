@@ -41,7 +41,7 @@ class Restdb extends Db_api {
 		}
 		
 		$this->register_db( $this->db_id, $get_db['config'] );		
-		//$this->register_custom_sql( 'democracymap', config_item('sql_args') );		
+		//$this->register_custom_sql( 'democracymap', config_item('sql_args') );
 		
 		$query = array('db' => $this->db_id, 'table' => $this->get_table, 'limit' => $this->get_limit, 'page' => $this->get_page);		
 		
@@ -56,13 +56,11 @@ class Restdb extends Db_api {
 
 
 	private function prepare_db() {
-		
 		if ($this->get_local == 'true') {
 			if(strpos($this->db_id, ".$this->get_format")) $this->db_id = substr($this->db_id, 0, strpos($this->db_id, ".$this->get_format"));								
 		} else {
 			if(!empty($this->get_table) && strpos($this->get_table, ".$this->get_format")) $this->get_table = substr($this->get_table, 0, strpos($this->get_table, ".$this->get_format"));								
 		}
-
 		$query = $this->get_database($this->get_user, $this->db_id);			
 
 		if ($query->num_rows() > 0) {
@@ -185,14 +183,12 @@ class Restdb extends Db_api {
 		$this->swagger->apiVersion = "0.1";
 
 		$basePath = (strpos(current_url(), '/api-docs')) ? substr(current_url(), 0, strpos(current_url(), '/api-docs')) : current_url();
-		
 		if(empty($this->db_id)) {
 			
 			$user = $this->get_user_dbs($user);
 			$resources = $user['connections'];
 			
-
-			$this->swagger->basePath = 'http://'.$_SERVER['SEVER_NAME'].$basePath; //substr($basePath, 0, strrpos($basePath, '/'));
+			$this->swagger->basePath = $basePath;
 			unset($this->swagger->resourcePath);
 			
 			$this->swagger->apis = array();
@@ -215,12 +211,9 @@ class Restdb extends Db_api {
 				$this->db_id = substr($this->db_id, 0, strpos($this->db_id, ".$this->get_format"));								
 			}
 
+			$this->swagger->basePath = $basePath;
 
-
-			$basePath = (strpos(current_url(), '/api-docs')) ? substr(current_url(), 0, strpos(current_url(), '/api-docs')) : current_url();
-			$this->swagger->basePath = 'http://'.$_SERVER['SERVER_NAME'].$basePath; //substr($basePath, 0, strrpos($basePath, '/'));
 			$this->swagger->resourcePath = substr(current_url(), strrpos(current_url(), '/'));			
-
 			$get_db = $this->prepare_db();
 			$db_settings = $get_db['db_settings'];			
 
@@ -265,7 +258,6 @@ class Restdb extends Db_api {
 		if (!empty($name_url)) {
 			$query['name_url'] = $name_url;		
 		}
-				
 		return $this->db->get_where('db_connections', $query);				
 		
 	}
@@ -338,7 +330,7 @@ class Restdb extends Db_api {
 	
 	private function swagger_api($table_name, $table_url) {
 		
-			$api['path'] = $this->swagger->resourcePath . '/' . $table_url . '.{format}';
+			$api['path'] = $this->swagger->resourcePath . '/' . $table_url . '.' . config_item('rest_default_format');
 			$api['description'] = '';
 
 			$operations = $this->swagger->operations();			
