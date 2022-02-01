@@ -12,7 +12,7 @@ $config['github_oauth_secret'] = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 $config['github_oauth_redirect'] =  'http://' . $_SERVER['SERVER_NAME'] . '/auth/session/github';
 
 $config['default_page_size'] = 50; // this defines the default for the 'limit' parameter in queries
-
+$config['max_page_size'] = 100; // max pagesize form limit in queries
 
 /*
 |--------------------------------------------------------------------------

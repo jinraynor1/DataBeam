@@ -25,7 +25,11 @@ class Restdb extends Db_api {
 		$this->get_user 	= (empty($user))  ? $this->input->get('user', TRUE)	 : $user;		
 		$this->get_local	= (empty($local)) ? $this->input->get('local', TRUE) : $local;		
 		$this->get_format 	= $this->_detect_output_format(); 
-		
+
+		if($this->config->item('max_page_size') && $this->input->get('limit') > $this->config->item('max_page_size')) {
+			$this->response(array('status' => false, 'error' => sprintf('page size too big, must be less than %d', $this->config->item('max_page_size'))), 401);
+		}
+
 		$this->get_limit  	= (empty($limit)) ? $this->input->get('limit', TRUE) : $limit;			
 		$this->get_limit 	= (empty($this->get_limit) && $this->config->item('default_page_size')) ? $this->config->item('default_page_size') :  $this->get_limit;
 		$this->get_page  	= (empty($page)) ? $this->input->get('page', TRUE) : $page;			
@@ -400,7 +404,7 @@ class Restdb extends Db_api {
 			$p_limit['dataType']	 	= 'int';	
 						
 			$allowableValues = $this->swagger->allowableValues();
-			$allowableValues['max'] 	= 1000;
+			$allowableValues['max'] 	= config_item('max_page_size')? config_item('max_page_size') : 1000;
 			$allowableValues['min'] 	= 1;														
 			$allowableValues['valueType'] 	= 'RANGE';																		
 			
